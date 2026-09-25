@@ -1,0 +1,15 @@
+{
+  "name": "raushan-ai",
+  "version": "1.0.0",
+  "description": "My own AI chatbot",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@google/genai": "^2.24.0",
+    "dotenv": "^17.0.0",
+    "express": "^5.1.0",
+    "openai": "^5.0.0"
+  }
+}

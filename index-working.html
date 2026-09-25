@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raushan AI</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f4f7;
+    }
+
+    header {
+      background: #111827;
+      color: white;
+      padding: 18px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    #chat {
+      height: 70vh;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .user, .ai {
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 12px;
+      max-width: 80%;
+    }
+
+    .user {
+      background: #dbeafe;
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .ai {
+      background: white;
+      margin-right: auto;
+    }
+
+    .input-area {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      padding: 10px;
+      background: white;
+      box-sizing: border-box;
+    }
+
+    input {
+      flex: 1;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      margin-left: 8px;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 10px;
+      background: #111827;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>🤖 Raushan AI</header>
+
+<div id="chat">
+  <div class="ai">
+    नमस्ते! मैं Raushan AI हूँ 🤖<br>
+    आप मुझसे कुछ भी पूछ सकते हैं।
+  </div>
+</div>
+
+<div class="input-area">
+  <input id="message" placeholder="अपना सवाल लिखें...">
+  <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+async function sendMessage() {
+
+  let input = document.getElementById("message");
+  let message = input.value.trim();
+
+  if (message === "") return;
+
+  let chat = document.getElementById("chat");
+
+  chat.innerHTML += `
+    <div class="user">${message}</div>
+  `;
+
+  input.value = "";
+  chat.scrollTop = chat.scrollHeight;
+
+  try {
+
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: message
+      })
+    });
+
+    const data = await response.json();
+
+    chat.innerHTML += `
+      <div class="ai">
+        ${data.reply || data.error}
+      </div>
+    `;
+
+  } catch (error) {
+
+    chat.innerHTML += `
+      <div class="ai">
+        ❌ AI से connection नहीं हो पाया।
+      </div>
+    `;
+  }
+
+  chat.scrollTop = chat.scrollHeight;
+}
+</script>
+
+</body>
+</html>
