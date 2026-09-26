@@ -194,6 +194,11 @@ button:active {
   }
 }
 .action-bar{display:flex;align-items:center;gap:6px;margin-top:7px;padding-left:2px}.action-btn{width:34px;height:32px;padding:4px;border:0;border-radius:8px;background:transparent;color:#6b7280;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}.action-btn:hover{background:#f1f5f9}.action-btn.active{background:#e5e7eb;color:#111827}</style>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#ffffff">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Raushan AI">
 </head>
 
 <body>
@@ -406,6 +411,29 @@ async function sendMessage() {
         actionBar.appendChild(moreBtn);
 
         contentWrap.appendChild(actionBar);
+
+        if (Array.isArray(data.sources) && data.sources.length) {
+          const sourcesBox = document.createElement("div");
+          sourcesBox.style.cssText = "margin-top:8px;padding:8px 10px;background:#f8fafc;border-radius:10px;font-size:13px;";
+
+          const sourceTitle = document.createElement("div");
+          sourceTitle.textContent = "🌐 Sources";
+          sourceTitle.style.cssText = "font-weight:600;margin-bottom:5px;color:#374151;";
+          sourcesBox.appendChild(sourceTitle);
+
+          data.sources.forEach((source, index) => {
+            if (!source.url) return;
+            const link = document.createElement("a");
+            link.href = source.url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = `${index + 1}. ${source.title || source.url}`;
+            link.style.cssText = "display:block;margin:4px 0;color:#2563eb;text-decoration:none;";
+            sourcesBox.appendChild(link);
+          });
+
+          contentWrap.appendChild(sourcesBox);
+        }
       }
     }
 
@@ -449,5 +477,12 @@ document
 
 </script>
 
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js");
+  });
+}
+</script>
 </body>
 </html> 
