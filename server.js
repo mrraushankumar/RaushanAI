@@ -18,6 +18,35 @@ app.post("/api/chat", async (req, res) => {
     const message = req.body.message?.trim();
     const q = message.toLowerCase();
 
+    if (/aaj.*(date|tarikh)|date.*aaj|today.*date|आज.*(date|तारीख)|तारीख.*आज/.test(q)) {
+      const now = new Date();
+      const date = new Intl.DateTimeFormat("en-IN", {
+        timeZone: "Asia/Kolkata",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }).format(now);
+      return res.json({
+        reply: `आज की तारीख ${date} है।`,
+        sources: []
+      });
+    }
+
+    if (/abhi.*(time|samay)|time.*abhi|current.*time|what.*time|अभी.*(time|समय)|समय.*अभी/.test(q)) {
+      const now = new Date();
+      const time = new Intl.DateTimeFormat("en-IN", {
+        timeZone: "Asia/Kolkata",
+        hour: "numeric",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+      }).format(now);
+      return res.json({
+        reply: `अभी भारत में समय ${time} है।`,
+        sources: []
+      });
+    }
+
     if (
       q.includes("raushan k bare") ||
       q.includes("raushan ke bare") ||
