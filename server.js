@@ -32,7 +32,7 @@ app.post("/api/chat", async (req, res) => {
       });
     }
 
-    if (/abhi.*(time|samay)|time.*abhi|current.*time|what.*time|अभी.*(time|समय)|समय.*अभी/.test(q)) {
+    if (/abhi.*(time|samay|kitna.*(baj|bja)|(?:baj|bja).*kitna|baje)|time.*abhi|current.*time|what.*time|what.*clock|अभी.*(time|समय|कितना.*बज|बज.*कितना|बजे)|समय.*अभी/.test(q)) {
       const now = new Date();
       const time = new Intl.DateTimeFormat("en-IN", {
         timeZone: "Asia/Kolkata",
