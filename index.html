@@ -93,13 +93,12 @@ header {
 }
 
 .message {
-  max-width: 78%;
+  max-width: 90%;
   padding: 12px 15px;
   border-radius: 17px;
   line-height: 1.5;
   word-wrap: break-word;
-  font-size: 15px;
-}
+  font-size: 17px;}
 
 .ai {
   background: white;
@@ -238,6 +237,18 @@ button:active {
 </div>
 
 <script>
+window.addEventListener("load", loadChatHistory);
+
+function saveChatHistory() {
+  localStorage.setItem("raushanAIChat", document.getElementById("chat").innerHTML);
+}
+
+function loadChatHistory() {
+  const saved = localStorage.getItem("raushanAIChat");
+  if (saved) {
+    document.getElementById("chat").innerHTML = saved;
+  }
+}
 
 async function sendMessage() {
 
@@ -434,10 +445,11 @@ async function sendMessage() {
 
           contentWrap.appendChild(sourcesBox);
         }
+        saveChatHistory();
       }
     }
-
     typeNext();
+
 
   } catch (error) {
 
@@ -478,6 +490,7 @@ document
 </script>
 
 <script>
+window.addEventListener("load", loadChatHistory);
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("/sw.js");
@@ -485,4 +498,4 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 </body>
-</html> 
+</html>
